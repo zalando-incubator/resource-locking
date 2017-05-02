@@ -130,7 +130,6 @@
         <connection>scm:git:https://github.com/zalando-incubator/resource-locking.git</connection>
         <developerConnection>scm:git:git@github.com:zalando-incubator/resource-locking.git</developerConnection>
         <url>https://github.com/zalando-incubator/resource-locking</url>
-        <tag>resource-locking-project-1.1</tag>
     </scm>
 
     <distributionManagement>
