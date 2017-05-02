@@ -1,6 +1,6 @@
 # resource-locking
 
-[![Maven Central](https://img.shields.io/maven-central/v/org.zalando/resource-locking.svg)]()
+[![Maven Central](https://img.shields.io/maven-central/v/org.zalando/resource-locking.svg)](https://github.com/zalando-incubator/resource-locking)
 
 ## Purpose
 
