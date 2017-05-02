@@ -144,17 +144,6 @@
         <url>https://tech.zalando.com/</url>
     </organization>
 
-
-    <ciManagement>
-        <system>Jenkins</system>
-        <url>https://zaster.ci.zalan.do</url>
-    </ciManagement>
-
-    <issueManagement>
-        <system>Jira</system>
-        <url>https://techjira.zalando.net/browse/ZAS/</url>
-    </issueManagement>
-
     <developers>
         <developer>
             <id>mgorzala</id>
