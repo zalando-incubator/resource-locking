@@ -104,6 +104,12 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
                 <executions>
@@ -126,7 +132,6 @@
         <url>https://github.com/zalando-incubator/resource-locking</url>
         <tag>HEAD</tag>
     </scm>
-
 
     <distributionManagement>
         <snapshotRepository>
