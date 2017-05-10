@@ -23,13 +23,13 @@
  */
 package org.zalando.resourcelock;
 
-import java.util.Date;
-
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 /**
  * Implementation of resource lock manager that uses jdbc as backend.

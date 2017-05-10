@@ -21,27 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.zalando.resourcelock.sample;
+package org.zalando.resourcelock.sample.config;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.zalando.boot.etcd.EtcdClient;
+import org.zalando.resourcelock.ResourceLockManager;
+import org.zalando.resourcelock.ResourceLockManagerEtcdImpl;
 
-@SpringBootApplication
-@EnableScheduling
-public class SampleApplication {
+@Configuration()
+@Profile("etcd")
+public class ResourceLockManagerEtcdConfiguration {
 
-	@Bean
-	public TaskScheduler taskScheduler() {
-		ThreadPoolTaskScheduler executor = new ThreadPoolTaskScheduler();
-		executor.setWaitForTasksToCompleteOnShutdown(true);
-		return executor;
-	}
-	
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(SampleApplication.class, args);
-	}
+    @Bean
+    public ResourceLockManager resourceLockManager(EtcdClient etcdClient) {
+        return new ResourceLockManagerEtcdImpl(etcdClient, "resource-locking-sample");
+    }
 }

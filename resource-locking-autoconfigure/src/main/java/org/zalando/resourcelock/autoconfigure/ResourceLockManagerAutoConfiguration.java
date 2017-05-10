@@ -31,8 +31,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.zalando.boot.etcd.EtcdClient;
-import org.zalando.resourcelock.ResourceLockManagerEtcdImpl;
 import org.zalando.resourcelock.ResourceLockManager;
+import org.zalando.resourcelock.ResourceLockManagerEtcdImpl;
 import org.zalando.resourcelock.ResourceLockManagerJdbcFunctionImpl;
 
 /**

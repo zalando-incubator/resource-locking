@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.zalando.resourcelock.ResourceLockManagerJdbcImpl;
+import org.zalando.resourcelock.ResourceLockManagerEtcdImpl;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -37,11 +37,11 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("jdbc")
-public class ResourceLockManagerJdbcTest {
+@ActiveProfiles("etcd")
+public class ResourceLockManagerEtcdTest {
 
     @Autowired
-    private ResourceLockManagerJdbcImpl manager;
+    private ResourceLockManagerEtcdImpl manager;
 
     @Test
     public void testLocks() throws InterruptedException {
