@@ -37,71 +37,71 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public class ResourceLockManagerJdbcImpl implements ResourceLockManager {
 
-	private static final String TABLE_NAME = "resource_lock";
+    private static final String TABLE_NAME = "resource_lock";
 
-	private static final String COLUMN_RESOURCE_NAME = "resource_name";
+    private static final String COLUMN_RESOURCE_NAME = "resource_name";
 
-	private static final String COLUMN_LOCK_NAME = "lock_name";
+    private static final String COLUMN_LOCK_NAME = "lock_name";
 
-	private static final String COLUMN_CREATED_AT = "created_at";
+    private static final String COLUMN_CREATED_AT = "created_at";
 
-	private static final String COLUMN_EXPIRES_AT = "expires_at";
+    private static final String COLUMN_EXPIRES_AT = "expires_at";
 
-	private JdbcTemplate template;
+    private JdbcTemplate template;
 
-	/**
-	 * Creates a new ResourceLockManagerJdbcImpl with the given JDBC template.
-	 * 
-	 * @param template
-	 *            the JDBC template
-	 */
-	public ResourceLockManagerJdbcImpl(JdbcTemplate template) {
-		this.template = template;
-	}
+    /**
+     * Creates a new ResourceLockManagerJdbcImpl with the given JDBC template.
+     *
+     * @param template
+     *            the JDBC template
+     */
+    public ResourceLockManagerJdbcImpl(JdbcTemplate template) {
+        this.template = template;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see ResourceLockManager#acquireLock(String, String)
-	 */
-	@Override
-	public boolean acquireLock(String resourceName, String lockName) {
-		return acquireLock(resourceName, lockName, 0);
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @see ResourceLockManager#acquireLock(String, String)
+     */
+    @Override
+    public boolean acquireLock(String resourceName, String lockName) {
+        return acquireLock(resourceName, lockName, 0);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see ResourceLockManager#acquireLock(String, String, int)
-	 */
-	@Override
-	public boolean acquireLock(String resourceName, String lockName, int ttl) {
-		try {
-			Date now = new Date();
+    /**
+     * {@inheritDoc}
+     *
+     * @see ResourceLockManager#acquireLock(String, String, int)
+     */
+    @Override
+    public boolean acquireLock(String resourceName, String lockName, int ttl) {
+        try {
+            Date now = new Date();
 
-			// delete any expired resource locks upfront
-			template.update(String.format("DELETE FROM %s WHERE %s = ? AND %s IS NOT NULL AND %s < ?", TABLE_NAME,
-					COLUMN_RESOURCE_NAME, COLUMN_EXPIRES_AT, COLUMN_EXPIRES_AT), resourceName, now);
-			// try to insert a resource lock
-			template.update(
-					String.format("INSERT INTO %s (%s, %s, %s, %s) VALUES (?, ?, ?, ?)", TABLE_NAME,
-							COLUMN_RESOURCE_NAME, COLUMN_LOCK_NAME, COLUMN_CREATED_AT, COLUMN_EXPIRES_AT),
-					resourceName, lockName, now, ttl == 0 ? null : DateUtils.addSeconds(now, ttl));
-			return true;
-		} catch (DuplicateKeyException e) {
-			return false;
-		}
-	}
+            // delete any expired resource locks upfront
+            template.update(String.format("DELETE FROM %s WHERE %s = ? AND %s IS NOT NULL AND %s < ?", TABLE_NAME,
+                    COLUMN_RESOURCE_NAME, COLUMN_EXPIRES_AT, COLUMN_EXPIRES_AT), resourceName, now);
+            // try to insert a resource lock
+            template.update(
+                    String.format("INSERT INTO %s (%s, %s, %s, %s) VALUES (?, ?, ?, ?)", TABLE_NAME,
+                            COLUMN_RESOURCE_NAME, COLUMN_LOCK_NAME, COLUMN_CREATED_AT, COLUMN_EXPIRES_AT),
+                    resourceName, lockName, now, ttl == 0 ? null : DateUtils.addSeconds(now, ttl));
+            return true;
+        } catch (DuplicateKeyException e) {
+            return false;
+        }
+    }
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see ResourceLockManager#releaseLock(String, String)
-	 */
-	@Override
-	public void releaseLock(String resourceName, String lockName) {
-		template.update(String.format("DELETE FROM %s WHERE %s = ? AND %s = ?", TABLE_NAME, COLUMN_RESOURCE_NAME,
-				COLUMN_LOCK_NAME), resourceName, lockName);
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @see ResourceLockManager#releaseLock(String, String)
+     */
+    @Override
+    public void releaseLock(String resourceName, String lockName) {
+        template.update(String.format("DELETE FROM %s WHERE %s = ? AND %s = ?", TABLE_NAME, COLUMN_RESOURCE_NAME,
+                COLUMN_LOCK_NAME), resourceName, lockName);
+    }
 
 }

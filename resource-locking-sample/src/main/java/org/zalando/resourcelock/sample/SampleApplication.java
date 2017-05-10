@@ -26,10 +26,12 @@ package org.zalando.resourcelock.sample;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.zalando.resourcelock.sample.SampleApplication;
+import org.zalando.resourcelock.ResourceLockManager;
+import org.zalando.resourcelock.ResourceLockManagerJdbcFunctionImpl;
 
 @SpringBootApplication
 @EnableScheduling
@@ -44,6 +46,11 @@ public class SampleApplication {
 	
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(SampleApplication.class, args);
+	}
+
+	@Bean
+	public ResourceLockManager resourceLockManager(JdbcTemplate template) {
+		return new ResourceLockManagerJdbcFunctionImpl(template);
 	}
 
 }

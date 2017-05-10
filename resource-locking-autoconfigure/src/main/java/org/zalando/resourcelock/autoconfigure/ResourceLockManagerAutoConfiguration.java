@@ -31,9 +31,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.zalando.boot.etcd.EtcdClient;
-import org.zalando.resourcelock.ResourceLockManager;
 import org.zalando.resourcelock.ResourceLockManagerEtcdImpl;
-import org.zalando.resourcelock.ResourceLockManagerJdbcImpl;
+import org.zalando.resourcelock.ResourceLockManager;
+import org.zalando.resourcelock.ResourceLockManagerJdbcFunctionImpl;
 
 /**
  * The auto configuration of the resource lock manager using either an etcd
@@ -67,7 +67,7 @@ public class ResourceLockManagerAutoConfiguration {
 
 		@Bean
 		public ResourceLockManager resourceLockManager(JdbcTemplate template) {
-			ResourceLockManager result = new ResourceLockManagerJdbcImpl(template);
+			ResourceLockManager result = new ResourceLockManagerJdbcFunctionImpl(template);
 			return result;
 		}
 
