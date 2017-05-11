@@ -35,7 +35,7 @@ import org.zalando.resourcelock.ResourceLockManagerJdbcImpl;
 public class ResourceLockManagerJdbcConfiguration {
 
     @Bean
-    public ResourceLockManager resourceLockManager2(JdbcTemplate template) {
+    public ResourceLockManager resourceLockManager(JdbcTemplate template) {
         return new ResourceLockManagerJdbcImpl(template);
     }
 }

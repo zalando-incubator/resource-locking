@@ -59,7 +59,7 @@ Additionally write a configuration that provides the specific backend for resour
     public class ResourceLockManagerConfiguration {
     
         @Bean
-        public ResourceLockManager resourceLockManager2(JdbcTemplate template) {
+        public ResourceLockManager resourceLockManager(JdbcTemplate template) {
             return new ResourceLockManagerJdbcImpl(template);
             // OR: return new ResourceLockManagerJdbcFunctionImpl(template);
         }
