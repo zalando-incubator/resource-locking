@@ -23,14 +23,13 @@
  */
 package org.zalando.resourcelock;
 
-import java.io.File;
-
+import lombok.extern.slf4j.Slf4j;
 import org.zalando.boot.etcd.EtcdClient;
 import org.zalando.boot.etcd.EtcdError;
 import org.zalando.boot.etcd.EtcdErrorCodes;
 import org.zalando.boot.etcd.EtcdException;
 
-import lombok.extern.slf4j.Slf4j;
+import java.io.File;
 
 /**
  * Implementation of resource lock manager that uses etcd as backend.

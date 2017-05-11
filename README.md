@@ -10,28 +10,64 @@ The resource-locking library provides a service that does pessimistic locking of
 ## Features
 
 * resource-locking with etcd as backend
-* resource-locking with JDBC as backend
+* resource-locking with JDBC as backend and access via SQL statements
+* resource-locking with JDBC as backend and access via SQL stored procedures
 
 ## Usage
 
-Use the provided Spring Boot Starter library and either a JDBC or etcd as backend.
+Use the provided Spring Boot Starter library and either.
 
     <dependency>
       <groupId>org.zalando</groupId>
       <artifactId>resource-locking-starter</artifactId>
       <version>RELEASE</version>
     </dependency>
+
+### etcd
+
+If you want to use etcd backend include the following dependency that provides the etcd client:  
     
     <dependency>
       <groupId>org.zalando</groupId>
       <artifactId>zalando-boot-etcd</artifactId>
       <version>2.3</version>
     </dependency>
+
+Additionally write a configuration that provides the specific backend for resource locking.
     
+    @Configuration()
+    public class ResourceLockManagerConfiguration {
+    
+        @Bean
+        public ResourceLockManager resourceLockManager(EtcdClient etcdClient) {
+            return new ResourceLockManagerEtcdImpl(etcdClient, "resource-locking-sample");
+        }
+    }
+
+### jdbc
+
+If you want to use jdbc backend include the following dependency that provides the etcd client:  
+
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
     </dependency>
+ 
+Additionally write a configuration that provides the specific backend for resource locking.
+
+    @Configuration()
+    public class ResourceLockManagerConfiguration {
+    
+        @Bean
+        public ResourceLockManager resourceLockManager(JdbcTemplate template) {
+            return new ResourceLockManagerJdbcImpl(template);
+            // OR: return new ResourceLockManagerJdbcFunctionImpl(template);
+        }
+    }
+   
+
+    
+
 
 ## Development 
 

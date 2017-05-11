@@ -21,28 +21,53 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.zalando.resourcelock.autoconfigure;
+package org.zalando.resourcelock.sample;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.zalando.resourcelock.ResourceLockManager;
-import org.zalando.resourcelock.sample.SampleApplication;
+import org.zalando.resourcelock.ResourceLockManagerJdbcImpl;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = SampleApplication.class)
-public class ResourceLockManagerAutoConfigurationEtcdTest {
+@SpringBootTest
+@ActiveProfiles("jdbc")
+public class ResourceLockManagerJdbcTest {
 
     @Autowired
-    private ResourceLockManager resourceLockManager;
+    private ResourceLockManager manager;
 
     @Test
-    public void testStartup() {
-        Assert.assertNotNull(resourceLockManager);
+    public void testLocks() throws InterruptedException {
+
+        // acquire lock
+        boolean result = manager.acquireLock("a", "a");
+        assertTrue("Lock could not be acquired", result);
+
+        // acquire lock and fail
+        result = manager.acquireLock("a", "a");
+        assertFalse("Lock was acquired", result);
+
+        // release lock and successfully reacquire lock
+        manager.releaseLock("a", "a");
+        result = manager.acquireLock("a", "a");
+        assertTrue("Lock could not be acquired", result);
+        manager.releaseLock("a", "a");
+
+        // acquire lock with ttl
+        result = manager.acquireLock("a", "a", 1);
+        result = manager.acquireLock("a", "a", 1);
+        assertFalse("Lock was acquired", result);
+        Thread.sleep(1200);
+        result = manager.acquireLock("a", "a");
+        assertTrue("Lock could not be acquired", result);
+        manager.releaseLock("a", "a");
     }
-
-
 }
