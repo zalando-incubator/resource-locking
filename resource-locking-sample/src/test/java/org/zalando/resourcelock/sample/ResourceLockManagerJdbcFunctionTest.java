@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.zalando.resourcelock.ResourceLockManager;
 import org.zalando.resourcelock.ResourceLockManagerJdbcFunctionImpl;
 
 import static org.junit.Assert.assertFalse;
@@ -41,7 +42,7 @@ import static org.junit.Assert.assertTrue;
 public class ResourceLockManagerJdbcFunctionTest {
 
     @Autowired
-    private ResourceLockManagerJdbcFunctionImpl manager;
+    private ResourceLockManager manager;
 
     @Test
     public void testLocks() throws InterruptedException {

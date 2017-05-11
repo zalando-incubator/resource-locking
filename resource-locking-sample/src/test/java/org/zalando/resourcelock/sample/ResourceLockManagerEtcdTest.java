@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.zalando.resourcelock.ResourceLockManager;
 import org.zalando.resourcelock.ResourceLockManagerEtcdImpl;
 
 import static org.junit.Assert.assertFalse;
@@ -41,7 +42,7 @@ import static org.junit.Assert.assertTrue;
 public class ResourceLockManagerEtcdTest {
 
     @Autowired
-    private ResourceLockManagerEtcdImpl manager;
+    private ResourceLockManager manager;
 
     @Test
     public void testLocks() throws InterruptedException {
@@ -64,7 +65,7 @@ public class ResourceLockManagerEtcdTest {
         result = manager.acquireLock("a", "a", 1);
         result = manager.acquireLock("a", "a", 1);
         assertFalse("Lock was acquired", result);
-        Thread.sleep(1200);
+        Thread.sleep(2500);
         result = manager.acquireLock("a", "a");
         assertTrue("Lock could not be acquired", result);
         manager.releaseLock("a", "a");
